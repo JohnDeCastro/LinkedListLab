@@ -17,23 +17,11 @@ class SinglyLinkedList<T>
      */
     public Node remove(Node head, int k)
     {
-      Node returnNode = head; //places head node into temp variable
-      
-      if(k == 0){ //checks if we want to remove first node aka head
-          head = head.next; //places next node from head as current node
-                            // removed node will delete @ garbage collection
-      } else {
-          Node previous = head; //head node will be labeled as previous
-          int count = 0; //start the count from 0
-
-          while(count < k - 1){ //while the count is one less than the given position in param
-              previous = previous.next; //places next node from previous as current previous
-              count++; //iterate count so 'previous' can go through linked list until before param position
-          } //completes when 'count' = the previous position before node intended to be deleted
-          Node current = previous.next; //places node to be deleted as 'current'
-          previous.next = current.next; //makes connection between previous node and node after current node
-      } //this will result in 'current' to be deleted when garage collection occurs since no node points to it
-      return returnNode; //returns updated head node with removed node
+      if(k == 0){
+          return head.next; //if k is first node, return next node
+      }
+      head.next = remove(head.next, k- 1); //use recursion to pass through nodes until base case is met and connection is replaced
+      return head; //returns new linked list via head
     }
 
     /**
@@ -63,13 +51,10 @@ class SinglyLinkedList<T>
      */
     public String toString(Node head)
     {
-        Node current = head; //places param into node variable names current
-        String tempString = ""; //initializes string holder as empty
-
-        while(current != null){ //while loop to traverse through linked list
-            tempString += current.data + " "; //adds current node value + a space to tempString
-            current = current.next; //progress to next node and place as current node
+        if (head == null){
+            return ""; //if head is empty, return empty string
         }
-        return tempString; //should return string nodes in singly linked list
+        return head.data + " " + toString(head.next); //uses recursion to return value at head, then head.next, until base case of
+                                                    //head == null is reached.
     }
 }
